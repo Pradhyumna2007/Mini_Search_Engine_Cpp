@@ -1,0 +1,1 @@
+A data base management system is crucial software that lets users create, store, manage and retrieve large amounts of organised data efficiently, acting as an interface between users/apps and the actual database, ensuring security, integrity, and controlled access, and solving issues like data redundancy and inconsistency found In older file systems.

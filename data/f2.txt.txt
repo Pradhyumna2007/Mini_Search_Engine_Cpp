@@ -1,0 +1,1 @@
+In computer science, DSA stands for Data Structures and Algorithms. It is foundational subject that focuses on organising data efficiently and writing effective, step by step procedure to solve problems.

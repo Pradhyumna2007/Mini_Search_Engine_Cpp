@@ -1,0 +1,1 @@
+Quantum Computing uses quantum mechanics instead of classical bits, allowing massive parallel processing to solve currently intractable problems in medicine, finance, AI, materials and cryptography, promising revolutionary speed for complex simulations and optimization, though it's still an emerging, error-prone field.
