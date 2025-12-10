@@ -1,70 +1,107 @@
-#  Mini Search Engine (C++)
-
-A lightweight, command-line search engine built from scratch in **C++** using  
-**TF-IDF ranking**, **word normalization**, **stemming**, and **multi-document indexing**.
-
-This project demonstrates how real search engines process text, index documents, and rank results based on relevance.
+# Mini Search Engine in C++  
+A full search engine built from scratch using **C++**, capable of processing multiple text documents, indexing every word, and ranking query results using **TF-IDF (Term Frequency – Inverse Document Frequency)**.  
+This project demonstrates how real search engines work internally — from text preprocessing to ranking relevant results.
 
 ---
 
-##  Features
+# 1. Introduction
 
-### 1. Multi-File Document Indexing
-- Reads multiple `.txt` files.
-- Cleans text (removes punctuation, converts to lowercase).
-- Performs stemming (`playing → play`, `stories → story`, etc.).
-- Builds a global **term-frequency index**.
+This project is a **Mini Search Engine** implemented completely in C++ without any external libraries.  
+It supports:
 
-### 2. Single Word Search
-- Searches for a **single keyword** across all documents.
-- Computes **TF-IDF score** for each document.
-- Ranks results from most relevant → least relevant.
+- Reading and indexing multiple documents  
+- Cleaning and normalizing text  
+- Stemming words  
+- Building a term-frequency map  
+- Searching single and multi-word queries  
+- Ranking results using TF-IDF  
+- Working through a simple command-line interface  
 
-### 3. Multi Word Search (AND logic)
-- Supports searching for multiple words.
-- Only returns documents containing **all** the words.
-- Ranks results using **combined TF-IDF score**.
-
-### 4. Command Line Interface
-Simple prompt-based interface:
-Enter your search query (or 'exit'):
+It is designed to be simple but realistic, showing core search engine concepts.
 
 ---
 
-## How It Works
+# 2. Features (Detailed)
 
-### Text Processing
-Each line is:
-1. Cleaned → non-alphanumeric removed  
-2. Lowercased  
-3. Tokenized  
-4. Stemmed  
-5. Counted into a frequency map
+### **2.1 Multi-Document Parsing**
+- Supports any number of `.txt` files.
+- Each file is scanned line by line.
+- Every word is:
+  - Cleaned (punctuation removed)
+  - Converted to lowercase
+  - Stemmed (simple rule-based stemmer)
+- A master dictionary (`unordered_map<string, vector<int>>`) stores counts of all terms across documents.
 
-### TF-IDF Calculation
-For each word in each document:
-TF = (count of word in doc) / (total words in doc)
+###  **2.2 Text Preprocessing**
+Includes:
+- Removing symbols  
+- Normalizing case  
+- Splitting into tokens  
+- Basic stemming for:
+  - plural words (`stories → story`)
+  - words ending with `ing`, `ed`, `es`
+  - trailing `s`
+
+###  **2.3 TF-IDF Ranking Engine**
+For each search query, TF-IDF score is calculated as:
+TF = term_count_in_doc / total_words_in_doc
 IDF = log(N / df)
-Score = TF * IDF
-Where:
-- `N` = total number of documents  
-- `df` = number of documents containing the word  
+Score = TF × IDF
 
-This ensures common words get lower score, rare but important words get higher.
+This gives:
+- Higher score for rare and meaningful terms  
+- Lower score for common words  
+
+### ✅ **2.4 Single Word Search**
+Example: Query: apple
+The program:
+- Finds all documents containing “apple”
+- Calculates TF-IDF per document
+- Sorts and prints from most relevant to least
+
+### ✅ **2.5 Multi-Word Search (AND Logic)**
+Example: Query: machine learning
+The program:
+- Stems each word  
+- Checks documents containing **all** words  
+- Computes combined TF-IDF score  
+- Ranks and prints them  
+
+### ✅ **2.6 Command Line Interface**
+The interaction is simple:
+Enter your search query (or 'exit'): 
 
 ---
 
-## Project Structure
-MiniSearchEngine/
-│
-├── main.cpp # Source code
-├── file1.txt
-├── file2.txt
-├── file3.txt
-├── ... more files
-└── README.md
+# 📁 3. Project Structure
+
+Mini_Search_Engine_Cpp/
+│── src/
+│    └── main.cpp
+│── data/
+│    └── your .txt files
+│── README.md
+│── .gitignore
 
 
+---
+
+# 🏗️ 4. How It Works (Behind the Scenes)
+
+### 🔸 Step 1: Read all files  
+Each file is read line-by-line.
+
+### 🔸 Step 2: Clean the words  
+All non-alphanumeric characters are removed.
+
+### 🔸 Step 3: Tokenize  
+The cleaned line is broken into individual words.
+
+### 🔸 Step 4: Stemming  
+Simple stemming rules are applied so similar words map to a single token.
+
+### 🔸 Step 5: Build Index  
+A global term-frequency dictionary is built:
 ---
 
 ## How to Run
@@ -79,20 +116,38 @@ g++ main.cpp -o search
 Artificial intelligence 
 banana 
 Data quantum
+exit
+---
 
 
 ---
 
-## 🔮 Future Improvements 
+# 📈 7. TF-IDF Formula Explanation
 
-- OR logic search  
-- Phrase search (“machine learning”)  
-- Better stemming  
-- Export results  
-- Inverted index using maps or trie  
+TF-IDF is used in real search engines (including Google-like systems) because it balances:
+
+- **Term Frequency (TF):** How often a word appears in a document  
+- **Inverse Document Frequency (IDF):** How rare the word is across all documents  
+
+The intuition:
+- Common words → low score  
+- Rare, meaningful words → high score  
+
+This gives better relevancy ranking.
 
 ---
 
+# 🔮 10. Future Improvements 
 
+If you ever expand the project:
+- OR / NOT logic queries  
+- Phrase search  
+- Wildcard search  
+- Better stemming algorithm  
+- Web-based frontend  
+- JSON output  
+- Real inverted index (map<word, vector<pair<doc, freq>>>)  
+
+---
 
 
