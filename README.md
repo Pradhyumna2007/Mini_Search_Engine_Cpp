@@ -52,14 +52,14 @@ This gives:
 - Higher score for rare and meaningful terms  
 - Lower score for common words  
 
-### ✅ **2.4 Single Word Search**
+###  **2.4 Single Word Search**
 Example: Query: apple
 The program:
 - Finds all documents containing “apple”
 - Calculates TF-IDF per document
 - Sorts and prints from most relevant to least
 
-### ✅ **2.5 Multi-Word Search (AND Logic)**
+###  **2.5 Multi-Word Search (AND Logic)**
 Example: Query: machine learning
 The program:
 - Stems each word  
@@ -67,13 +67,13 @@ The program:
 - Computes combined TF-IDF score  
 - Ranks and prints them  
 
-### ✅ **2.6 Command Line Interface**
+###  **2.6 Command Line Interface**
 The interaction is simple:
 Enter your search query (or 'exit'): 
 
 ---
 
-# 📁 3. Project Structure
+#  3. Project Structure
 
 Mini_Search_Engine_Cpp/
 │── src/
@@ -86,21 +86,21 @@ Mini_Search_Engine_Cpp/
 
 ---
 
-# 🏗️ 4. How It Works (Behind the Scenes)
+#  4. How It Works (Behind the Scenes)
 
-### 🔸 Step 1: Read all files  
+###  Step 1: Read all files  
 Each file is read line-by-line.
 
-### 🔸 Step 2: Clean the words  
+###  Step 2: Clean the words  
 All non-alphanumeric characters are removed.
 
-### 🔸 Step 3: Tokenize  
+###  Step 3: Tokenize  
 The cleaned line is broken into individual words.
 
-### 🔸 Step 4: Stemming  
+###  Step 4: Stemming  
 Simple stemming rules are applied so similar words map to a single token.
 
-### 🔸 Step 5: Build Index  
+###  Step 5: Build Index  
 A global term-frequency dictionary is built:
 ---
 
@@ -122,7 +122,7 @@ exit
 
 ---
 
-# 📈 7. TF-IDF Formula Explanation
+#  7. TF-IDF Formula Explanation
 
 TF-IDF is used in real search engines (including Google-like systems) because it balances:
 
@@ -137,7 +137,7 @@ This gives better relevancy ranking.
 
 ---
 
-# 🔮 10. Future Improvements 
+#  10. Future Improvements 
 
 If you ever expand the project:
 - OR / NOT logic queries  
