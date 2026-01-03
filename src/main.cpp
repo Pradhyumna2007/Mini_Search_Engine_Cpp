@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//  *Cleaning and *stemming words
+//  *Cleaning words
 string cleanWord(const string &s) {
     string out;
     for(char c:s){
@@ -12,32 +12,6 @@ string cleanWord(const string &s) {
         }
     }
     return out;
-}
-
-string stemWord(const string &w) {
-    string s = w;
-    int n = s.size();
-    if(n<=3){
-        return s;
-    }
-    //eg. studies is converted to study
-    if(n>4 && s.substr(n-3) == "ies"){
-        return s.substr(0,n-3)+"y";
-    }
-    //eg. glasses is converted to glass
-    if(n>4 && s.substr(n-2) == "es"){
-        return s.substr(0,n-2);
-    }
-    if(s[n-1] == 's'){
-        return s.substr(0,n-1);
-    }
-    if(n>5 && s.substr(n-3) == "ing"){
-        return s.substr(0,n-3);
-    }
-    if(n>4 && s.substr(n-2) == "ed"){
-        return s.substr(0,n-2);
-    }
-    return s;
 }
 
 // -------------------------- PARSING FILES --------------------------
