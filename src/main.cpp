@@ -1,24 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//  *Cleaning words
+/*
+ * Clean a line:
+ * - convert to lowercase
+ * - replace non-alphanumeric chars with space
+ */
 string cleanWord(const string &s) {
     string out;
-    for(char c:s){
-        if(isalnum(c)){
+    for (char c : s) {
+        if (isalnum(c)) {
             out.push_back(tolower(c));
-        }else{
+        } else {
             out.push_back(' ');
         }
     }
     return out;
 }
 
-// -------------------------- PARSING FILES --------------------------
-void parseFiles(const vector<string> &files,unordered_map<string, vector<int>> &termFreq,vector<int> &totalWords) {
+//  *PARSE FILES 
+void parseFiles(const vector<string> &files, unordered_map<string, vector<int>> &termFreq, vector<int> &totalWords) {
     int N = files.size();
-    totalWords.resize(N, 0);
-
+    totalWords.assign(N, 0);
     for (int file = 0; file < N; file++) {
         ifstream in(files[file]);
         if (!in.is_open()) {
@@ -31,8 +34,9 @@ void parseFiles(const vector<string> &files,unordered_map<string, vector<int>> &
             stringstream ss(cleaned);
             string w;
             while (ss >> w) {
-                w = stemWord(w); // Apply stemming
-                termFreq[w].resize(N);
+                if (termFreq.find(w) == termFreq.end()) {
+                    termFreq[w] = vector<int>(N, 0);
+                }
                 termFreq[w][file]++;
                 totalWords[file]++;
             }
@@ -41,100 +45,115 @@ void parseFiles(const vector<string> &files,unordered_map<string, vector<int>> &
     }
 }
 
-// -------------------------- SINGLE WORD SEARCH --------------------------
-void searchSingle(const string &word, const vector<string> &files,
-                  const unordered_map<string, vector<int>> &termFreq,
-                  const vector<int> &totalWords) {
-    string w = stemWord(word);
-
-    if (termFreq.find(w) == termFreq.end()) {
+// *SINGLE WORD SEARCH 
+void searchSingle(const string &word, const vector<string> &files, const unordered_map<string, vector<int>> &termFreq, const vector<int> &totalWords) {
+    if (termFreq.find(word) == termFreq.end()) {
         cout << "Word '" << word << "' not found in any document.\n";
         return;
     }
-
     int N = files.size();
     vector<double> scores(N, 0.0);
 
+    // compute document frequency
     int df = 0;
-    for (int d = 0; d < N; d++)
-        if (termFreq.at(w)[d] > 0) df++;
+    for(int d = 0; d < N; d++){
+        if(termFreq.at(word)[d] > 0)df++;
+    }
+    if(df == 0){
+        return;
+    }
     double idf = log((double)N / df);
-
-    for (int d = 0; d < N; d++)
-        scores[d] = ((double)termFreq.at(w)[d] / totalWords[d]) * idf;
-
+    for (int d = 0; d < N; d++) {
+        if (totalWords[d] > 0) {
+            double tf = (double)termFreq.at(word)[d] / totalWords[d];
+            scores[d] = tf * idf;
+        }
+    }
     vector<pair<double,int>> ranking;
-    for (int d = 0; d < N; d++) ranking.push_back({scores[d], d});
+    for (int d = 0; d < N; d++) {
+        ranking.push_back({scores[d], d});
+    }
     sort(ranking.rbegin(), ranking.rend());
-
-    cout << "\n--- TF-IDF Ranked Results ---\n";
+    cout << "\n * TF-IDF Ranked Results \n";
     for (auto &p : ranking) {
-        if (p.first > 0.0)
-            cout << "file " << p.second+1 << " (" << files[p.second] 
+        if (p.first > 0.0) {
+            cout << "file " << p.second + 1
+                 << " (" << files[p.second]
                  << ") --> Score = " << p.first << "\n";
+        }
     }
 }
 
-// -------------------------- MULTI WORD SEARCH (AND) --------------------------
-void searchMulti(const vector<string> &words, const vector<string> &files,
-                 const unordered_map<string, vector<int>> &termFreq,
-                 const vector<int> &totalWords) {
+// * MULTI WORD SEARCH (AND QUERY) 
+void searchMulti(const vector<string> &words, const vector<string> &files, const unordered_map<string, vector<int>> &termFreq, const vector<int> &totalWords) {
     int N = files.size();
-    vector<string> stemmedWords;
-
-    for (auto &word : words)
-        stemmedWords.push_back(stemWord(word));
-
-    for (auto &w : stemmedWords) {
+    // check all words exist
+    for (const auto &w : words) {
         if (termFreq.find(w) == termFreq.end()) {
             cout << "Word '" << w << "' not found in any document.\n";
             return;
         }
     }
 
+    // precompute IDF for each query word
+    unordered_map<string, double> idf;
+    for (const auto &w : words) {
+        int df = 0;
+        for (int d = 0; d < N; d++) {
+            if (termFreq.at(w)[d] > 0) df++;
+        }
+        idf[w] = (df > 0) ? log((double)N / df) : 0.0;
+    }
+
     vector<double> fileScore(N, 0.0);
 
     for (int d = 0; d < N; d++) {
+        if (totalWords[d] == 0) continue;
+
         bool containsAll = true;
         double score = 0.0;
 
-        for (auto &w : stemmedWords) {
+        for (const auto &w : words) {
             if (termFreq.at(w)[d] == 0) {
                 containsAll = false;
                 break;
             }
-            int df = 0;
-            for (int k = 0; k < N; k++)
-                if (termFreq.at(w)[k] > 0) df++;
-            double idf = log((double)N / df);
             double tf = (double)termFreq.at(w)[d] / totalWords[d];
-            score += tf * idf;
+            score += tf * idf[w];
         }
 
-        if (containsAll) fileScore[d] = score;
+        if (containsAll) {
+            fileScore[d] = score;
+        }
     }
 
     vector<pair<double,int>> ranking;
-    for (int d = 0; d < N; d++) ranking.push_back({fileScore[d], d});
+    for (int d = 0; d < N; d++) {
+        ranking.push_back({fileScore[d], d});
+    }
+
     sort(ranking.rbegin(), ranking.rend());
 
-    bool foundAny = false;
-    cout << "\n--- TF-IDF Ranked Results (All words must exist) ---\n";
+    cout << "\n* TF-IDF Ranked Results (AND Query) \n";
+    bool found = false;
     for (auto &p : ranking) {
         if (p.first > 0.0) {
-            cout << "file " << p.second+1 << " (" << files[p.second] 
+            cout << "file " << p.second + 1
+                 << " (" << files[p.second]
                  << ") --> Score = " << p.first << "\n";
-            foundAny = true;
+            found = true;
         }
     }
-    if (!foundAny) cout << "No document contains all query words.\n";
+    if (!found) {
+        cout << "No document contains all query words.\n";
+    }
 }
 
-// -------------------------- MAIN --------------------------
+// * MAIN 
 int main() {
     vector<string> files = {
-        "file1.txt","file2.txt","file3.txt","file4.txt",
-        "file5.txt","file6.txt","file7.txt","xyz.txt"
+        "f1ile1.txt","f2.txt","f3.txt","f4.txt",
+        "f5.txt","f6.txt"
     };
 
     unordered_map<string, vector<int>> termFreq;
@@ -147,25 +166,24 @@ int main() {
         string q;
         getline(cin, q);
 
-        if (q.empty()) {
-            cout << "No input entered. Try again.\n";
-            continue;
-        }
         if (q == "exit") break;
 
         string cleaned = cleanWord(q);
         stringstream ss(cleaned);
         vector<string> queryWords;
         string w;
+
         while (ss >> w) queryWords.push_back(w);
 
         if (queryWords.empty()) {
-            cout << "No valid words entered. Try again.\n";
+            cout << "No valid words entered.\n";
             continue;
         }
 
-        if (queryWords.size() == 1) searchSingle(queryWords[0], files, termFreq, totalWords);
-        else searchMulti(queryWords, files, termFreq, totalWords);
+        if (queryWords.size() == 1)
+            searchSingle(queryWords[0], files, termFreq, totalWords);
+        else
+            searchMulti(queryWords, files, termFreq, totalWords);
     }
 
     return 0;
