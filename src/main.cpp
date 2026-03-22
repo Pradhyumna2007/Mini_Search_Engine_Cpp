@@ -152,8 +152,8 @@ void searchMulti(const vector<string> &words, const vector<string> &files, const
 // * MAIN 
 int main() {
     vector<string> files = {
-        "f1ile1.txt","f2.txt","f3.txt","f4.txt",
-        "f5.txt","f6.txt"
+        "f1.txt","f2.txt","f3.txt","f4.txt",
+        "f5.txt"
     };
 
     unordered_map<string, vector<int>> termFreq;
