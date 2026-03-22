@@ -1,4 +1,11 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <cctype>
 using namespace std;
 
 /*
@@ -9,8 +16,8 @@ using namespace std;
 string cleanWord(const string &s) {
     string out;
     for (char c : s) {
-        if (isalnum(c)) {
-            out.push_back(tolower(c));
+        if (isalnum((unsigned char)c)) {
+            out.push_back(tolower((unsigned char)c));
         } else {
             out.push_back(' ');
         }
@@ -60,9 +67,10 @@ void searchSingle(const string &word, const vector<string> &files, const unorder
         if(termFreq.at(word)[d] > 0)df++;
     }
     if(df == 0){
+        cout << "Word '" << word << "' not found in any document.\n";
         return;
     }
-    double idf = log((double)N / df);
+    double idf = log((double)(N + 1) / (df + 1)) + 1.0;
     for (int d = 0; d < N; d++) {
         if (totalWords[d] > 0) {
             double tf = (double)termFreq.at(word)[d] / totalWords[d];
@@ -102,7 +110,7 @@ void searchMulti(const vector<string> &words, const vector<string> &files, const
         for (int d = 0; d < N; d++) {
             if (termFreq.at(w)[d] > 0) df++;
         }
-        idf[w] = (df > 0) ? log((double)N / df) : 0.0;
+        idf[w] = log((double)(N + 1) / (df + 1)) + 1.0;
     }
 
     vector<double> fileScore(N, 0.0);
@@ -152,8 +160,11 @@ void searchMulti(const vector<string> &words, const vector<string> &files, const
 // * MAIN 
 int main() {
     vector<string> files = {
-        "f1.txt","f2.txt","f3.txt","f4.txt",
-        "f5.txt"
+        "../data/f1.txt",
+        "../data/f2.txt",
+        "../data/f3.txt",
+        "../data/f4.txt",
+        "../data/f5.txt"
     };
 
     unordered_map<string, vector<int>> termFreq;
