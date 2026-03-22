@@ -83,8 +83,7 @@ Documents are sorted by descending TF–IDF score and displayed to the user.
 ## TF–IDF Formula
 
 * **Term Frequency (TF)** = occurrences of term in document / total words in document
-* **Inverse Document Frequency (IDF)** = log(N / df)
-* **Score** = TF × IDF
+* **Inverse Document Frequency (IDF)** = log((double)(N + 1) / (df + 1)) + 1.0;
 
 This ensures:
 
