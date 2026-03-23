@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cctype>
+#include<chrono>
 using namespace std;
 
 /*
@@ -172,29 +173,65 @@ int main() {
 
     parseFiles(files, termFreq, totalWords);
 
-    while (true) {
+    int totalIndexedWords = 0;
+    int indexedDocs = 0;
+
+    for(int x : totalWords){
+        totalIndexedWords += x;
+        if(x > 0){
+            indexedDocs++;
+        }
+    }
+
+    cout << "Documents indexed: " << indexedDocs << "\n";
+    cout << "Unique tokens: " << termFreq.size() << "\n";
+    cout << "Total words indexed: " << totalIndexedWords << "\n";
+
+    long long totalQueryTime = 0;
+    int queryCount = 0;
+
+    while(true){
         cout << "\nEnter your search query (or 'exit'): ";
         string q;
         getline(cin, q);
 
-        if (q == "exit") break;
+        if(q == "exit"){
+            break;
+        }
 
         string cleaned = cleanWord(q);
         stringstream ss(cleaned);
         vector<string> queryWords;
         string w;
 
-        while (ss >> w) queryWords.push_back(w);
+        while(ss >> w){
+            queryWords.push_back(w);
+        }
 
-        if (queryWords.empty()) {
+        if(queryWords.empty()){
             cout << "No valid words entered.\n";
             continue;
         }
 
-        if (queryWords.size() == 1)
+        auto start = chrono::high_resolution_clock::now();
+
+        if(queryWords.size() == 1){
             searchSingle(queryWords[0], files, termFreq, totalWords);
-        else
+        }else{
             searchMulti(queryWords, files, termFreq, totalWords);
+        }
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+
+        cout << "Query time: " << duration.count() << " microseconds\n";
+
+        totalQueryTime += duration.count();
+        queryCount++;
+    }
+
+    if(queryCount > 0){
+        cout << "Average query time: " << (double)totalQueryTime / queryCount << " microseconds\n";
     }
 
     return 0;
