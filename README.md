@@ -124,30 +124,26 @@ Each matching document receives a relevance score using TF–IDF.
 
 Measures how often a term appears in a document.
 
-[
-TF = \frac{\text{Occurrences of term in document}}{\text{Total words in document}}
-]
+TF = (Occurrences of term in document) / (Total words in document)
+
+---
 
 ### Inverse Document Frequency (IDF)
 
 Measures how unique or important a term is across all documents.
 
-[
-IDF = \log \left( \frac{N + 1}{df + 1} \right) + 1
-]
+IDF = log((N + 1) / (df + 1)) + 1
 
 Where:
 
-* `N` = total number of documents
-* `df` = number of documents containing the term
+* N = total number of documents
+* df = number of documents containing the term
+
+---
 
 ### Final Score
 
-[
-TF\text{-}IDF = TF \times IDF
-]
-
-Documents are sorted in descending order of TF–IDF score and displayed to the user.
+TF-IDF = TF × IDF
 
 ---
 
