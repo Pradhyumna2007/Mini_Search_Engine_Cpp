@@ -16,7 +16,8 @@ This project focuses on the fundamentals of information retrieval, including tex
   * Tokenization
   * Rule-based stemming
 * TF–IDF based relevance ranking
-* Support for single-word and multi-word (AND) queries
+* Single-word queries
+* Multi-word AND-based queries
 * Interactive command-line interface
 * In-memory inverted index implementation
 
@@ -66,7 +67,7 @@ Mini_Search_Engine_Cpp/
 
 ### 1. Document Parsing
 
-All text files inside the `data` directory are read line by line using file handling in C++. Each document is assigned a unique document ID for indexing and retrieval.
+All text files inside the `data` directory are read line by line using C++ file handling. Each document is assigned a unique document ID for indexing and retrieval.
 
 ---
 
@@ -79,7 +80,7 @@ Before indexing, every word passes through a preprocessing pipeline:
 * Text is tokenized into individual terms
 * Simple rule-based stemming is applied
 
-This helps normalize words and improves search consistency.
+This normalization process improves consistency between indexed documents and user queries.
 
 ---
 
@@ -105,14 +106,20 @@ This structure enables fast lookup of documents containing specific terms.
 
 ### 4. Query Processing
 
-User queries are processed using the same preprocessing pipeline as the documents.
+User queries are processed using the same preprocessing pipeline as the indexed documents.
 
-For multi-word queries:
+Supported query types:
 
-* Documents containing all query terms are identified
-* Relevant documents are collected for ranking
+* Single-word queries
+* Multi-word AND-based queries
 
-This ensures consistency between indexed data and search queries.
+Example:
+
+```plaintext
+machine learning
+```
+
+returns documents containing both `"machine"` and `"learning"`, but not necessarily as an exact phrase.
 
 ---
 
@@ -124,7 +131,9 @@ Each matching document receives a relevance score using TF–IDF.
 
 Measures how often a term appears in a document.
 
+```plaintext
 TF = (Occurrences of term in document) / (Total words in document)
+```
 
 ---
 
@@ -132,18 +141,24 @@ TF = (Occurrences of term in document) / (Total words in document)
 
 Measures how unique or important a term is across all documents.
 
+```plaintext
 IDF = log((N + 1) / (df + 1)) + 1
+```
 
 Where:
 
-* N = total number of documents
-* df = number of documents containing the term
+* `N` = total number of documents
+* `df` = number of documents containing the term
 
 ---
 
 ### Final Score
 
+```plaintext
 TF-IDF = TF × IDF
+```
+
+Documents are sorted in descending order of TF–IDF score and displayed to the user.
 
 ---
 
@@ -227,3 +242,5 @@ This project is open-source and available under the MIT License.
 ## Notes
 
 This project is intended for educational purposes and focuses on clarity, correctness, and understanding of search engine fundamentals rather than large-scale optimization.
+
+
