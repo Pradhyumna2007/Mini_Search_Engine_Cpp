@@ -1,1 +1,184 @@
-Search engines rank documents using TF IDF. Database systems use indexing for optimization. Database systems use indexing for optimization. Artificial intelligence improves search systems. Machine learning models process large datasets. Blockchain enables decentralized applications. Search engines rank documents using TF IDF. Machine learning models process large datasets. Artificial intelligence improves search systems. Search engines rank documents using TF IDF. Database systems use indexing for optimization. Artificial intelligence improves search systems. Blockchain enables decentralized applications. Blockchain enables decentralized applications. Artificial intelligence improves search systems. Blockchain enables decentralized applications. Blockchain enables decentralized applications. Search engines rank documents using TF IDF. Blockchain enables decentralized applications. Machine learning models process large datasets.
+Multiset in C++ STL
+Last Updated : 1 Jun, 2026
+Multiset is an associative container similar to a set, but it can store multiple elements with the same value. It is sorted in increasing order by default, but it can be changed to any desired order using a custom comparator.
+
+Allows duplicate elements, unlike a set.
+Supports standard set operations like insert(), erase(), count(), and find().
+It uses a self-balancing Binary Search Tree, ensuring O(log n) time complexity for operations.
+
+
+
+#include <iostream>
+#include <set>
+using namespace std;
+​
+int main()
+{
+    // Creating an empty multiset of integers
+    multiset<int> ms1;
+    
+    // Initialize with initializer list
+    multiset<int> ms2 = {5, 3, 3, 1};
+    
+    // Print elements (automatically sorted)
+    for (auto i : ms2)
+        cout << i << " ";
+​
+    return 0;
+}
+
+Output
+1 3 3 5 
+Explanation
+ms1 creates an empty multiset of integers.
+ms2 is initialized with four elements, including the duplicate value 3.
+The multiset automatically stores elements in sorted order.
+Unlike set, both occurrences of 3 are preserved and displayed.
+Syntax
+multiset<T> ms;
+
+Where:
+
+T -> data type of elements
+ms -> name of the multiset
+Basic Operations on Multiset
+A multiset provides several built-in member functions to efficiently store, access, search, and remove elements while maintaining sorted order.
+
+Inserting Elements
+We can insert elements into a multiset by using insert() method. The multiset will automatically keep the elements sorted.
+
+
+
+
+#include <iostream>
+#include <set>
+using namespace std;
+​
+int main()
+{
+    // Creating a multiset of integers
+    multiset<int> ms;
+​
+    // Inserting elements (duplicates allowed)
+    ms.insert(5);
+    ms.insert(3);
+    ms.insert(3);
+    ms.insert(1);
+​
+    // Print elements (automatically sorted)
+    for (auto i : ms)
+        cout << i << " ";
+​
+    return 0;
+}
+
+Output
+1 3 3 5 
+Accessing Elements
+Elements cannot be accessed by index; use an iterator from begin() and advance it. The first element is *begin(), and the last is one step back from end().
+
+
+
+
+#include <iostream>
+#include <iterator>
+#include <set>
+using namespace std;
+​
+int main()
+{
+    multiset<int> ms = {5, 3, 3, 1};
+​
+    // Access first element
+    auto it1 = ms.begin();
+    cout << *it1 << " ";
+​
+    // Access third element
+    auto it2 = next(it1, 2);
+    cout << *it2;
+​
+    return 0;
+}
+
+Output
+1 3
+Finding Elements
+Multiset provides fast search by value operation using the find() member function. This function returns iterator the element if found, otherwise returns end() iterator.
+
+
+
+
+#include <iostream>
+#include <set>
+using namespace std;
+​
+int main()
+{
+    multiset<int> ms = {5, 3, 3, 1};
+​
+    // Finding an element (3)
+    auto it = ms.find(3);
+​
+    if (it != ms.end())
+        cout << *it;
+    else
+        cout << "Not Found!";
+​
+    return 0;
+}
+
+Output
+3
+Traversing
+Use a range-based for loop or begin()/end() iterators to traverse a multiset. And It use equal_range() to traverse all elements with the same value.
+
+
+
+
+#include <iostream>
+#include <set>
+using namespace std;
+​
+int main()
+{
+    multiset<int> ms = {5, 3, 3, 1};
+​
+    // Traversing using range-based for loop
+    for (auto i : ms)
+        cout << i << " ";
+​
+    return 0;
+}
+
+Output
+1 3 3 5 
+Deleting Elements
+The erase() method removes elements by value (all occurrences) or by iterator (specific element).
+
+
+
+
+#include <iostream>
+#include <set>
+using namespace std;
+​
+int main()
+{
+    multiset<int> ms = {5, 3, 3, 1};
+​
+    // Delete first element
+    ms.erase(ms.begin());
+​
+    // Delete all occurrences of 3
+    ms.erase(3);
+​
+    // Print remaining elements
+    for (auto x : ms)
+        cout << x << " ";
+​
+    return 0;
+}
+
+Output
+5 
+Note: Elements in a multiset cannot be updated or modified once inserted.

@@ -1,1 +1,251 @@
-Blockchain enables decentralized applications. Database systems use indexing for optimization. Search engines rank documents using TF IDF. Search engines rank documents using TF IDF. Database systems use indexing for optimization. Database systems use indexing for optimization. Machine learning models process large datasets. Database systems use indexing for optimization. Search engines rank documents using TF IDF. Blockchain enables decentralized applications. Search engines rank documents using TF IDF. Search engines rank documents using TF IDF. Artificial intelligence improves search systems. Machine learning models process large datasets. Database systems use indexing for optimization. Search engines rank documents using TF IDF. Search engines rank documents using TF IDF. Database systems use indexing for optimization. Artificial intelligence improves search systems. Artificial intelligence improves search systems.
+Blockchain enables decentralized applications. Database systems use indexing for optimization. Search engines rank documents using TF IDF. Search engines rank documents using TF IDF. Database systems use indexing for optimization. Database systems use indexing for optimization. Machine learning models process large datasets. Database systems use indexing for optimization. Search engines rank documents using TF IDF. Blockchain enables decentralized applications. Search engines rank documents using TF IDF. Search engines rank documents using TF IDF. Artificial intelligence improves search systems. Machine learning models process large datasets. Database systems use indexing for optimization. Search engines rank documents using TF IDF. Search engines rank documents using TF IDF. Database systems use indexing for optimization. Artificial intelligence improves search systems. Artificial intelligence improves search systems.STD::array in C++
+Last Updated : 9 Jun, 2022
+The array is a collection of homogeneous objects and this array container is defined for constant size arrays or (static size). This container wraps around fixed-size arrays and the information of its size are not lost when declared to a pointer. 
+In order to utilize arrays, we need to include the array header: 
+ 
+
+ #include <array> 
+
+Let's see an example.  
+ 
+
+
+
+// CPP program to demonstrate working of array
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <iterator>
+#include <string>
+using namespace std;
+​
+int main() {
+​
+  // construction uses aggregate initialization
+  // double-braces required
+  array<int, 5> ar1{{3, 4, 5, 1, 2}};
+  array<int, 5> ar2 = {1, 2, 3, 4, 5};
+  array<string, 2> ar3 = {{string("a"), "b"}};
+​
+  cout << "Sizes of arrays are" << endl;
+  cout << ar1.size() << endl;
+  cout << ar2.size() << endl;
+  cout << ar3.size() << endl;
+  
+  cout << "\nInitial ar1 : ";
+  for (auto i : ar1)
+    cout << i << ' ';
+​
+  // container operations are supported
+  sort(ar1.begin(), ar1.end());
+​
+  cout << "\nsorted ar1 : ";
+  for (auto i : ar1)
+    cout << i << ' ';
+​
+  // Filling ar2 with 10
+  ar2.fill(10);
+​
+  cout << "\nFilled ar2 : ";
+  for (auto i : ar2)
+    cout << i << ' ';
+​
+​
+  // ranged for loop is supported
+  cout << "\nar3 : ";
+  for (auto &s : ar3)
+    cout << s << ' ';
+​
+  return 0;
+}
+
+Output: 
+Sizes of arrays are
+5
+5
+2
+
+Initial ar1 : 3 4 5 1 2 
+sorted ar1 : 1 2 3 4 5 
+Filled ar2 : 10 10 10 10 10 
+ar3 : a b
+
+ 
+This C++ STL array is a kind of sequential container and is not used extremely in regular programming or in competitive programming but sometimes its member function provides an upper edge to it over the regular normal array that we use in our daily life. So, we are discussing some of the important member function that is used with such kind of array:
+
+Member Functions for Array Template are as follows:
+
+
+
+Syntax:                    array<object_type, arr_size> arr_name;
+
+
+
+a) [ ] Operator : This is similar to the normal array, we use it to access the element store at index 'i' .
+
+Ex:   
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <char , 3> arr={'G','f','G'};
+    cout<<arr[0] <<" "<<arr[2];
+    return 0;
+}
+
+Output
+G G
+b) front( ) and back( ) function: These methods are used to access the first and the last element of the array directly.
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <int , 3> arr={'G','f','G'};  // ASCII val of 'G' =71 
+    cout<<arr.front() <<" "<<arr.back();
+    return 0;
+}
+
+Output
+71 71
+c) swap( ) function: This swap function is used to swap the content of the two arrays.
+
+Ex: 
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <int , 3> arr={'G','f','G'};  // ASCII val of 'G' =71 
+    array <int , 3> arr1={'M','M','P'}; // ASCII val of 'M' = 77 and 'P' = 80
+    arr.swap(arr1);  // now arr = {M,M,P}
+    cout<<arr.front() <<" "<<arr.back();
+    return 0;
+}
+
+Output
+77 80
+d) empty( ) function: This function is used to check whether the declared STL array is empty or not, if it is empty then it returns true else false.
+
+Ex: 
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <int , 3> arr={'G','f','G'};  // ASCII val of 'G' =71 
+    array <int , 3> arr1={'M','M','P'}; // ASCII val of 'M' = 77 and 'P' = 80
+    bool x = arr.empty(); // false ( not empty)
+    cout<<boolalpha<<(x);
+    return 0;
+}
+
+Output
+false
+e) at( ) function: This function is used to access the element stored at a specific location, if we try to access the element which is out of bounds of the array size then it throws an exception. 
+
+Ex: 
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <int , 3> arr={'G','f','G'};  // ASCII val of 'G' =71 
+    array <int , 3> arr1={'M','M','P'}; // ASCII val of 'M' = 77 and 'P' = 80
+    cout<< arr.at(2) <<" " << arr1.at(2);
+    //cout<< arr.at(3); // exception{Abort signal from abort(3) (SIGABRT)}
+    return 0;
+}
+
+Output
+71 80
+f) fill( ) function: This is specially used to initialize or fill all the indexes of the array with a similar value.
+
+Ex:
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <int , 5> arr;
+    arr.fill(1);
+    for(int i: arr)
+       cout<<arr[i]<<" ";
+    return 0;
+}
+
+Output
+1 1 1 1 1 
+g) size( ) or max_size( ) and sizeof( ) function: Both size( ) or max_size( ) are used to get the maximum number of indexes in the array while sizeof( ) is used to get the total size of array in bytes.
+
+
+
+
+#include <iostream>
+#include <array>
+using namespace std;
+​
+int main() {
+    array <int , 10> arr;    
+    cout<<arr.size()<<'\n'; // total num of indexes
+    cout<<arr.max_size()<<'\n'; // total num of indexes
+    cout<<sizeof(arr); // total size of array
+    return 0;
+}
+
+Output
+10
+10
+40
+h) data( ): This function returns the pointer to the first element of the array object. Because elements in the array are stored in contiguous memory locations. This data( ) function return us the base address of the string/char type object.
+
+Ex: 
+
+
+
+
+#include <iostream>
+#include <cstring>
+#include <array>
+​
+using namespace std;
+​
+int main ()
+{
+  const char* str = "GeeksforGeeks";
+  array<char,13> arr;
+  memcpy (arr.data(),str,13);
+  cout << arr.data() << '\n';
+  return 0;
+}
+ 
+ 
+
+
+Output
+GeeksforGeeks
