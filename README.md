@@ -1,4 +1,4 @@
-# Mini Search Engine in C++
+#  DocSeek - Mini Search Engine in C++
 
 A command-line search engine built from scratch using C++, demonstrating the core concepts behind real-world information retrieval systems. The project processes multiple text documents, builds an inverted index, and ranks search results using TF–IDF (Term Frequency – Inverse Document Frequency).
 
